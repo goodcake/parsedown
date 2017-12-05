@@ -1340,6 +1340,24 @@ class Parsedown
         {
             return;
         }
+        
+        //Custom Image Parser
+        if (preg_match('/(https|http)?:\/\/[(\w+)\.]+[\/(\w+)\/]*(\w+)\.(jpg|jpeg|png)$/ui', $Excerpt['context'], $matches, PREG_OFFSET_CAPTURE))
+        {
+            $Inline = array(
+                'extent' => strlen($matches[0][0]),
+                'position' => $matches[0][1],
+                'element' => array(
+                    'name' => 'img',
+                    'text' => '',
+                    'attributes' => array(
+                        'src' => $matches[0][0],
+                    ),
+                ),
+            );
+
+            return $Inline;
+        }
 
         if (preg_match('/\bhttps?:[\/]{2}[^\s<]+\b\/*/ui', $Excerpt['context'], $matches, PREG_OFFSET_CAPTURE))
         {
